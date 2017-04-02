@@ -1,11 +1,14 @@
-﻿<!DOCTYPE html>
+﻿{% extends "base.html" %}
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <h2>Home Page</h2>
-</body>
-</html>
+{% block content%}
+    <h3>Items in stock</h3>
+    <ul>
+        {% for item in items %}
+        <li>
+            <a href="{% url 'item_detail' item.id %}">
+                {{item.title|capfirst}}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

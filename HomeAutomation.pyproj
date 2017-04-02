@@ -48,6 +48,7 @@
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="homeautomation\homeautomation\templates\base.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\index.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\item_detail.html" />
   </ItemGroup>
