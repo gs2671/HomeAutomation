@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class TestfrontendConfig(AppConfig):
-    name = 'testfrontend'
+    name = 'ProductList'

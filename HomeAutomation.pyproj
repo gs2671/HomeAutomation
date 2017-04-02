@@ -21,29 +21,35 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="homeautomation_backend\homeautomation_backend\settings.py" />
-    <Compile Include="homeautomation_backend\homeautomation_backend\urls.py" />
-    <Compile Include="homeautomation_backend\homeautomation_backend\wsgi.py" />
-    <Compile Include="homeautomation_backend\homeautomation_backend\__init__.py" />
-    <Compile Include="homeautomation_backend\manage.py" />
-    <Compile Include="homeautomation_backend\testfrontend\admin.py" />
-    <Compile Include="homeautomation_backend\testfrontend\apps.py" />
-    <Compile Include="homeautomation_backend\testfrontend\migrations\0001_initial.py" />
-    <Compile Include="homeautomation_backend\testfrontend\migrations\__init__.py" />
-    <Compile Include="homeautomation_backend\testfrontend\models.py" />
-    <Compile Include="homeautomation_backend\testfrontend\tests.py" />
-    <Compile Include="homeautomation_backend\testfrontend\urls.py" />
-    <Compile Include="homeautomation_backend\testfrontend\views.py" />
-    <Compile Include="homeautomation_backend\testfrontend\__init__.py" />
+    <Compile Include="homeautomation\homeautomation\settings.py" />
+    <Compile Include="homeautomation\homeautomation\urls.py" />
+    <Compile Include="homeautomation\homeautomation\wsgi.py" />
+    <Compile Include="homeautomation\homeautomation\__init__.py" />
+    <Compile Include="homeautomation\manage.py" />
+    <Compile Include="homeautomation\ProductList\admin.py" />
+    <Compile Include="homeautomation\ProductList\apps.py" />
+    <Compile Include="homeautomation\ProductList\migrations\0001_initial.py" />
+    <Compile Include="homeautomation\ProductList\migrations\__init__.py" />
+    <Compile Include="homeautomation\ProductList\models.py" />
+    <Compile Include="homeautomation\ProductList\tests.py" />
+    <Compile Include="homeautomation\ProductList\urls.py" />
+    <Compile Include="homeautomation\ProductList\views.py" />
+    <Compile Include="homeautomation\ProductList\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="homeautomation_backend" />
-    <Folder Include="homeautomation_backend\homeautomation_backend" />
-    <Folder Include="homeautomation_backend\testfrontend" />
-    <Folder Include="homeautomation_backend\testfrontend\migrations" />
+    <Folder Include="homeautomation\" />
+    <Folder Include="homeautomation\homeautomation\" />
+    <Folder Include="homeautomation\homeautomation\templates\" />
+    <Folder Include="homeautomation\homeautomation\templates\ProductList\" />
+    <Folder Include="homeautomation\ProductList\" />
+    <Folder Include="homeautomation\ProductList\migrations\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="homeautomation\homeautomation\templates\ProductList\index.html" />
+    <Content Include="homeautomation\homeautomation\templates\ProductList\item_detail.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <ProjectExtensions>

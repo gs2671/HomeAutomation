@@ -16,7 +16,11 @@ Including another URLconf
 from django.conf.urls import include,url
 from django.contrib import admin
 
+from ProductList import views
+
 urlpatterns = [
-    url(r'^testfrontend/',include('testfrontend.urls')),
+    url(r'^$',views.index,name="index"),
+    url(r'^item/(?P<id>\d+)/',views.item_detail,name='item_detail'),
+    url(r'^ProductList/',include('ProductList.urls')),
     url(r'^admin/', admin.site.urls),
 ]
