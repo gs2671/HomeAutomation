@@ -39,6 +39,8 @@
   <ItemGroup>
     <Folder Include="homeautomation\" />
     <Folder Include="homeautomation\homeautomation\" />
+    <Folder Include="homeautomation\homeautomation\static\" />
+    <Folder Include="homeautomation\homeautomation\static\ProductList\" />
     <Folder Include="homeautomation\homeautomation\templates\" />
     <Folder Include="homeautomation\homeautomation\templates\ProductList\" />
     <Folder Include="homeautomation\ProductList\" />

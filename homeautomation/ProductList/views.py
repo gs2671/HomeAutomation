@@ -5,7 +5,7 @@ from ProductList.models import Item
 
 # Create your views here.
 def index(request):
-    items=Item.objects.exclude(amount=0)
+    items=Item.objects.exclude(price=0.0)
     return render(request,'ProductList/index.html',{
         'items':items,      
         })

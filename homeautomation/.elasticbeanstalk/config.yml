@@ -1,0 +1,16 @@
+branch-defaults:
+  default:
+    environment: django-env
+global:
+  application_name: django-tutorial
+  branch: null
+  default_ec2_keyname: gs2671-key-pair-2
+  default_platform: python2.7
+  default_region: us-west-2
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: null
+  sc: null
+  workspace_type: Application

@@ -25,7 +25,9 @@ SECRET_KEY = '#!n!#=+bd*h6mps*16t)fjpf(=uah_-%b9=s2szitotzc&k(5m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    u'django-env.5bfp4cnjw3.us-west-2.elasticbeanstalk.com',
+    ]
 
 
 # Application definition
@@ -40,7 +42,7 @@ INSTALLED_APPS = [
     'ProductList',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,18 +77,18 @@ WSGI_APPLICATION = 'homeautomation.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    #'default': {
-     #   'ENGINE': 'django.db.backends.sqlite3',
-      #  'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #}
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'homeautomation',
-        'USER':'root',
-        'PASSWORD':'admin@123',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    #'default': {
+     #   'ENGINE': 'django.db.backends.mysql',
+      #  'NAME': 'homeautomation',
+       # 'USER':'root',
+       # 'PASSWORD':'admin@123',
+       # 'HOST':'127.0.0.1',
+       # 'PORT':'3306'
+    #}
 }
 
 
