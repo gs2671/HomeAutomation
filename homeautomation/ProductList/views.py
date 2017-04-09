@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http import Http404
+from django.http import HttpResponse,Http404
 
-from ProductList.models import Item
+from ProductList.models import *
 
 # Create your views here.
 def index(request):
@@ -15,12 +15,17 @@ def index(request):
 def item_detail(request,id):
     try:
         item=Item.objects.get(id=id)
-        #return HttpResponse('<p>In item_detail view with id {0}</p>'.format(id))
+        if(item is not None):
+            comments=Comment.objects.filter(item__id=id)
+            #return HttpResponse('<p>No of commetns found {0}</p>'.format(len(comments)))
+        #else:
+            #return HttpResponse('<p>No Comments</p>')
     except Item.DoesNotExist:
         raise Http404('This item does not exist')
 
     return render(request,'ProductList/item_detail.html',{
-        'item':item
+        'item':item,
+        'comments':comments
         })
 
 

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Item
+from .models import *
 
 class ItemAdmin(admin.ModelAdmin):
     list_display=['title','price']
@@ -9,3 +9,4 @@ class ItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Item,ItemAdmin)
+admin.site.register(Comment)
