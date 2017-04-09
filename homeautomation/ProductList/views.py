@@ -4,14 +4,14 @@ from django.http import HttpResponse,Http404
 from ProductList.models import *
 
 # Create your views here.
-def index(request,category=None):
-    if(category is None):    
+def index(request,categoryname=None):
+    if(categoryname is None):    
         items=Item.objects.exclude(price=0.0)
         return render(request,'ProductList/index.html',{
             'items':items,      
             })
     else:
-        items=Item.objects.filter(item__category=category)
+        items=Item.objects.filter(category=categoryname)
         return render(request,'ProductList/index.html',{
             'items':items,      
             })
