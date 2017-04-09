@@ -15,9 +15,9 @@
             <div class="col-md-3">
                 <p class="lead">AutoZone</p>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Kitchen</a>
-                    <a href="#" class="list-group-item">Movies</a>
-                    <a href="#" class="list-group-item">Bed Room</a>
+                    <a href="{% url 'index' category="Kitchen" %}" class="list-group-item">Kitchen</a>
+                    <a href="{% url 'index' category="Entertainment" %}" class="list-group-item">Entertainment</a>
+                    <a href="{% url 'index' category="Bedroom" %}" class="list-group-item">Bedroom</a>
                 </div>
             </div>
 

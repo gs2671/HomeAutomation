@@ -7,9 +7,10 @@ from django.db import models
 class Item(models.Model):
     title=models.CharField(max_length=200)
     description=models.TextField()
+    category=models.TextField(choices=[("Kitchen","Kitchen"),("Entertainment","Entertainment"),("Bedroom","Bedroom"),("None","None")], default="None")
     price=models.FloatField(default=0.0)
 
 class Comment(models.Model):
     text=models.TextField()
-    createdon=models.DateTimeField(default=datetime.datetime.now)    
+    createdon=models.DateTimeField(default=datetime.datetime.now)   
     item=models.ForeignKey(Item)

@@ -4,11 +4,17 @@ from django.http import HttpResponse,Http404
 from ProductList.models import *
 
 # Create your views here.
-def index(request):
-    items=Item.objects.exclude(price=0.0)
-    return render(request,'ProductList/index.html',{
-        'items':items,      
-        })
+def index(request,category=None):
+    if(category is None):    
+        items=Item.objects.exclude(price=0.0)
+        return render(request,'ProductList/index.html',{
+            'items':items,      
+            })
+    else:
+        items=Item.objects.filter(item__category=category)
+        return render(request,'ProductList/index.html',{
+            'items':items,      
+            })
 
     #return HttpResponse('<p>In index view</p>')
 
