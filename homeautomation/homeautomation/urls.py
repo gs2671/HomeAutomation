@@ -19,7 +19,7 @@ from django.contrib import admin
 from ProductList import views
 
 urlpatterns = [
-    url(r'^category/(?P<category>)/',views.index,name="filtered_index"),
+    # url(r'^category/(?P<category>)/',views.index,name="filtered_index"),
     url(r'^$',views.index,name="index"),
     url(r'^item/(?P<id>\d+)/',views.item_detail,name='item_detail'),
     url(r'^ProductList/',include('ProductList.urls')),
