@@ -5,8 +5,13 @@ from .forms import CommentForm
 from ProductList.models import *
 
 # Create your views here.
+<<<<<<< HEAD
 def index(request,categoryname=None):
     if(categoryname is None):    
+=======
+def index(request,category=None):
+    if(category is None):
+>>>>>>> e659d8722fb4e2ed002907bf91c11b7477a613e9
         items=Item.objects.exclude(price=0.0)
         return render(request,'ProductList/index.html',{
             'items':items,
