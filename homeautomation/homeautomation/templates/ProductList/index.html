@@ -60,7 +60,9 @@
 
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
+                          {% if item.image%}
+                            <img src="{{ item.image.url }}" alt="" width=100px height=100px >
+                            {% endif %}
                             <div class="caption">
                                 <h4 class="pull-right">${{item.price}}</h4>
                                 <h4>

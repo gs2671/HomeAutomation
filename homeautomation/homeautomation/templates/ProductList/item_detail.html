@@ -1,5 +1,9 @@
 ﻿{% extends "base.html" %}
 
+{%block head_title %}
+{{ instance.title}}|{{block.super}}
+{% endblock head_title %}
+
 {% block content %}
 
 <!-- Page Content -->
@@ -17,9 +21,8 @@
             </div>-->
 
             <!--<div class="col-md-9">-->
-
+                <img class="img-responsive" src='{{ item.image.url }}' alt="" height=400px width=400px >
                 <div class="thumbnail">
-                    <img class="img-responsive" src="http://placehold.it/800x300" alt="">
                     <div class="caption-full">
                         <h4 class="pull-right">${{item.price}}</h4>
                         <h4><a href="#">{{item.title|capfirst}}</a>
@@ -48,6 +51,7 @@
                     </div>
                      <!-- Modal -->
                      <div id="myModal" class="modal fade" role="dialog">
+
                           <div class="modal-dialog">
 
                             <!-- Modal content-->
