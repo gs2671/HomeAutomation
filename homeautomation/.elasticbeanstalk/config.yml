@@ -1,6 +1,10 @@
 branch-defaults:
   default:
     environment: django-env
+environment-defaults:
+  django-env:
+    branch: null
+    repository: null
 global:
   application_name: django-tutorial
   branch: null

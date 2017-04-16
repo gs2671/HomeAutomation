@@ -13,11 +13,35 @@
         <div class="row">
 
             <div class="col-md-3">
+ 
                 <p class="lead">Category</p>
                 <div class="list-group">
-                    <a href="{% url 'filtered_index' categoryname='Kitchen' %}" class="list-group-item">Kitchen</a>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="None" checked="checked">None</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="Kitchen">Kitchen</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="Entertainment">Entertainment</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="Bedroom">Bedroom</label></div>
+                    <!--<a href="{% url 'filtered_index' categoryname='Kitchen' %}" class="list-group-item">Kitchen</a>
                     <a href="{% url 'filtered_index' categoryname='Entertainment' %}" class="list-group-item">Entertainment</a>
-                    <a href="{% url 'filtered_index' categoryname='Bedroom' %}" class="list-group-item">Bedroom</a>
+                    <a href="{% url 'filtered_index' categoryname='Bedroom' %}" class="list-group-item">Bedroom</a>-->
+                </div>
+
+                <p class="lead">Price</p>
+                <div class="list-group">
+                    <div class="radio"><label><input type="radio" name="rd_budget">Less than $100</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget">$100 to $200</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget">$200 to $300</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget">$300 to $400</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget">$400 to $500</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget">Greater than $500</label></div>
+                    <!--<a href="{% url 'filtered_index' categoryname='Lessthan$100' %}" class="list-group-item">Less than $100</a>
+                    <a href="{% url 'filtered_index' categoryname='$100to$200' %}" class="list-group-item">$100 to $200</a>
+                    <a href="{% url 'filtered_index' categoryname='$200to$300' %}" class="list-group-item">$200 to $300</a>
+                    <a href="{% url 'filtered_index' categoryname='$300to$400' %}" class="list-group-item">$300 to $400</a>
+                    <a href="{% url 'filtered_index' categoryname='$400to$500' %}" class="list-group-item">$400 to $500</a>
+                    <a href="{% url 'filtered_index' categoryname='Greaterthen$500' %}" class="list-group-item">Greater than $500</a>-->
+                </div>
+                <div class="list-group">
+                    <button id="filterButton" type="button" class="btn btn-info btn-sm btn-block">Apply Filter</button>
                 </div>
             </div>
 
@@ -206,5 +230,22 @@
 
     </div>
     <!-- /.container -->
+
+
+    <script type="text/javascript">
+        var category="None";
+        $(document).ready(function () {
+
+            $('input[name$="rd_category"]').change(function () {
+                category = $(this).val()
+                alert('Radio Button Clicked with category value ' + category);
+            });
+
+            $("#filterButton").click(function () {
+                window.location = "/category/"+category+"/";
+            });
+
+        })
+    </script>
 
 {% endblock %}

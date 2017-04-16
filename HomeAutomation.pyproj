@@ -28,6 +28,7 @@
     <Compile Include="homeautomation\manage.py" />
     <Compile Include="homeautomation\ProductList\admin.py" />
     <Compile Include="homeautomation\ProductList\apps.py" />
+    <Compile Include="homeautomation\ProductList\forms.py" />
     <Compile Include="homeautomation\ProductList\models.py" />
     <Compile Include="homeautomation\ProductList\tests.py" />
     <Compile Include="homeautomation\ProductList\urls.py" />
