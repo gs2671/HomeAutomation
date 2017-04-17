@@ -16,10 +16,10 @@
  
                 <p class="lead">Category</p>
                 <div class="list-group">
-                    <div class="radio"><label><input type="radio" name="rd_category" value="None" checked="checked">None</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_category" value="Kitchen">Kitchen</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_category" value="Entertainment">Entertainment</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_category" value="Bedroom">Bedroom</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="None"{% if category == "None" %}checked="checked"{% endif %}>None</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="Kitchen"{% if category == "Kitchen" %}checked="checked"{% endif %}>Kitchen</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="Entertainment"{% if category == "Entertainment" %}checked="checked"{% endif %}>Entertainment</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_category" value="Bedroom"{% if category == "Bedroom" %}checked="checked"{% endif %}>Bedroom</label></div>
                     <!--<a href="{% url 'filtered_index' categoryname='Kitchen' %}" class="list-group-item">Kitchen</a>
                     <a href="{% url 'filtered_index' categoryname='Entertainment' %}" class="list-group-item">Entertainment</a>
                     <a href="{% url 'filtered_index' categoryname='Bedroom' %}" class="list-group-item">Bedroom</a>-->
@@ -233,16 +233,19 @@
 
 
     <script type="text/javascript">
-        var category="None";
+        var category = null;
+        //var budgetStart = null;
+        //var budgetEnd = null;
         $(document).ready(function () {
-
-            $('input[name$="rd_category"]').change(function () {
-                category = $(this).val()
-                alert('Radio Button Clicked with category value ' + category);
+            category= $('input[name="rd_category"]:checked').val();
+            $('input[name="rd_category"]').change(function () {
+                category = $(this).val();
+                //alert('Radio Button Clicked with category value ' + category);
             });
 
             $("#filterButton").click(function () {
-                window.location = "/category/"+category+"/";
+                //window.location = "/category/"+category+"/";
+                window.location = "?category=" + category;
             });
 
         })
