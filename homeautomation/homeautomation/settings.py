@@ -130,5 +130,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = "/media/"
-MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),"media_cdn")
+
+#MEDIAFILES_LOCATION = 'media'
+#MEDIA_URL = "/media/"
+#MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),"media_cdn")
+
+AWS_STORAGE_BUCKET_NAME = 'homeautomation-images'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+
+MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+#MEDIAFILES_LOCATION = 'media'
+#MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+#DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
+

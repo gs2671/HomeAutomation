@@ -21,6 +21,9 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="homeautomation\homeautomation\custom_storages.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="homeautomation\homeautomation\settings.py" />
     <Compile Include="homeautomation\homeautomation\urls.py" />
     <Compile Include="homeautomation\homeautomation\wsgi.py" />
