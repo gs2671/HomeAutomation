@@ -27,12 +27,13 @@
 
                 <p class="lead">Price</p>
                 <div class="list-group">
-                    <div class="radio"><label><input type="radio" name="rd_budget">Less than $100</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_budget">$100 to $200</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_budget">$200 to $300</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_budget">$300 to $400</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_budget">$400 to $500</label></div>
-                    <div class="radio"><label><input type="radio" name="rd_budget">Greater than $500</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="None"{% if budget == "None" %}checked="checked"{% endif %}>None</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="0,100"{% if budget == "0,100" %}checked="checked"{% endif %}>Less than $100</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="100,200"{% if budget == "100,200" %}checked="checked"{% endif %}>$100 to $200</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="200,300"{% if budget == "200,300" %}checked="checked"{% endif %}>$200 to $300</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="300,400"{% if budget == "300,400" %}checked="checked"{% endif %}>$300 to $400</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="400,500"{% if budget == "400,500" %}checked="checked"{% endif %}>$400 to $500</label></div>
+                    <div class="radio"><label><input type="radio" name="rd_budget" value="500,9223372036854775807"{% if budget == "500,9223372036854775807" %}checked="checked"{% endif %}>Greater than $500</label></div>
                     <!--<a href="{% url 'filtered_index' categoryname='Lessthan$100' %}" class="list-group-item">Less than $100</a>
                     <a href="{% url 'filtered_index' categoryname='$100to$200' %}" class="list-group-item">$100 to $200</a>
                     <a href="{% url 'filtered_index' categoryname='$200to$300' %}" class="list-group-item">$200 to $300</a>
@@ -234,18 +235,23 @@
 
     <script type="text/javascript">
         var category = null;
-        //var budgetStart = null;
-        //var budgetEnd = null;
+        var budget = null;
         $(document).ready(function () {
-            category= $('input[name="rd_category"]:checked').val();
+            category = $('input[name="rd_category"]:checked').val();
+            budget = $('input[name="rd_budget"]:checked').val();          
+
+            $('input[name="rd_budget"]').change(function () {
+                budget = $(this).val();
+            });
+
             $('input[name="rd_category"]').change(function () {
-                category = $(this).val();
+                category = $(this).val();                
                 //alert('Radio Button Clicked with category value ' + category);
             });
 
             $("#filterButton").click(function () {
                 //window.location = "/category/"+category+"/";
-                window.location = "?category=" + category;
+                window.location = "?category=" + category+"&budget="+budget;
             });
 
         })

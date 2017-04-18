@@ -3,22 +3,43 @@ from django.http import HttpResponse,Http404,HttpResponseRedirect
 
 from .forms import CommentForm
 from ProductList.models import *
+import sys
 
 # Create your views here.
 def index(request):
+    #Getting Category filter value
     if('category' in request.GET):
-        categoryname = request.GET.get('category')
+        categoryVal = request.GET.get('category')
     else:
-        categoryname="None";
+        categoryVal="None";
 
-    if(categoryname=="None"):    
-        items=Item.objects.exclude(price=0.0)       
+    #Getting Budget start filter value
+    if('budget' in request.GET):
+        budgetVal=request.GET.get('budget');
+        if(budgetVal=="None"):
+            budgetStart=0; 
+            budgetEnd=sys.maxint;
+        else:
+            budgetStart,budgetEnd = budgetVal.split(',',1);
     else:
-        items=Item.objects.filter(category=categoryname).exclude(price=0.0) 
+        budgetVal="None";
+        budgetStart=0; 
+        budgetEnd=sys.maxint;       
+        
+
+    if(categoryVal=="None" and budgetVal=="None"):    
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
+    elif(categoryVal!="None" and budgetVal!="None"):
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
+    elif(categoryVal=="None" and budgetVal!="None"):
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
+    else:
+        items=Item.objects.filter(category=categoryVal).exclude(price=0.0) 
         
     return render(request,'ProductList/index.html',{
         'items':items,
-        'category':categoryname,
+        'category':categoryVal,
+        'budget':budgetVal,
         })
 
     #return HttpResponse('<p>In index view</p>')
