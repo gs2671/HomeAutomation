@@ -17,25 +17,25 @@ def index(request):
     if('budget' in request.GET):
         budgetVal=request.GET.get('budget');
         if(budgetVal=="None"):
-            budgetStart=0; 
+            budgetStart=0;
             budgetEnd=sys.maxint;
         else:
             budgetStart,budgetEnd = budgetVal.split(',',1);
     else:
         budgetVal="None";
-        budgetStart=0; 
-        budgetEnd=sys.maxint;       
-        
+        budgetStart=0;
+        budgetEnd=sys.maxint;
 
-    if(categoryVal=="None" and budgetVal=="None"):    
-        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
+
+    if(categoryVal=="None" and budgetVal=="None"):
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
     elif(categoryVal!="None" and budgetVal!="None"):
-        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0)
     elif(categoryVal=="None" and budgetVal!="None"):
-        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
     else:
-        items=Item.objects.filter(category=categoryVal).exclude(price=0.0) 
-        
+        items=Item.objects.filter(category=categoryVal).exclude(price=0.0)
+
     return render(request,'ProductList/index.html',{
         'items':items,
         'category':categoryVal,
