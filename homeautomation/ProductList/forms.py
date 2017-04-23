@@ -1,15 +1,16 @@
 from django import forms
-from django.contrib.auth import(
-    authenticate,
-    get_user_model,
-    login,
-    logout,
-)
+# from django.contrib.auth import(
+#     authenticate,
+#     get_user_model,
+#     login,
+#     logout,
+# )
+from ProductList.models import *
 
 class CommentForm(forms.Form):
     text=forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Type your Comment'}), label='',required = False)
 
-User=get_user_model()
+#User=get_user_model()
 
 class UserLoginForm(forms.Form):
     username = forms.CharField()
@@ -39,7 +40,7 @@ class UserRegistrationForm(forms.ModelForm):
     password= forms.CharField(widget=forms.PasswordInput)
     email= forms.EmailField(label="Email Address")
 # First option is data value sshould be changed to item code later
-    OPTIONS = (
+    OPTIONS = [
             ("Amazon Echo", "Amazon Echo"),
             ("Google Home", "Google Home"),
             ("Ring Video Doorbell","Ring Video Doorbell"),
@@ -48,7 +49,7 @@ class UserRegistrationForm(forms.ModelForm):
             ('Ecobee Remote Sensor','Ecobee Remote Sensor'),
             ('Philips Hue','Philips Hue'),
             ('Bose sound link Bluetooth Speaker','Bose sound link Bluetooth Speaker')
-            )
+            ]
     devices = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,choices=OPTIONS)
     class Meta:
         model= User

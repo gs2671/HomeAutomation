@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
-from django.contrib.auth.models import User
 from django.contrib.auth import(
     authenticate,
     get_user_model,
@@ -117,6 +116,7 @@ def register_view(request):
         user=form.save(commit=False)
         password = form.cleaned_data.get('password')
         user.set_password(password)
+        user=User(username=user.username, password=password, email=user.email, devices=user.devices)
         user.save()
         new_user=authenticate(username=user, password=password)
         login(request, new_user)
