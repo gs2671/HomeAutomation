@@ -13,48 +13,48 @@ import sys
 
 # Create your views here.
 def index(request):
-    # #Getting Category filter value
-    # if('category' in request.GET):
-    #     categoryVal = request.GET.get('category')
-    # else:
-    #     categoryVal="None";
-    #
-    # #Getting Budget start filter value
-    # if('budget' in request.GET):
-    #     budgetVal=request.GET.get('budget');
-    #     if(budgetVal=="None"):
-    #         budgetStart=0;
-    #         budgetEnd=sys.maxint;
-    #     else:
-    #         budgetStart,budgetEnd = budgetVal.split(',',1);
-    # else:
-    #     budgetVal="None";
-    #     budgetStart=0;
-    #     budgetEnd=sys.maxint;
-    #
-    #
-    # if(categoryVal=="None" and budgetVal=="None"):
-    #     items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
-    # elif(categoryVal!="None" and budgetVal!="None"):
-    #     items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0)
-    # elif(categoryVal=="None" and budgetVal!="None"):
-    #     items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
-    # else:
-    #     items=Item.objects.filter(category=categoryVal).exclude(price=0.0)
-    #
-    # return render(request,'ProductList/index.html',{
-    #     'items':items,
-    #     'category':categoryVal,
-    #     'budget':budgetVal,
-    #     })
+    #Getting Category filter value
+    if('category' in request.GET):
+        categoryVal = request.GET.get('category')
+    else:
+        categoryVal="None";
 
-    users=User.objects.all()
-    userStr=''
-    for u in users:
-        # devices=u.devices.all()
-        userStr=userStr+u.devices.all()
+    #Getting Budget start filter value
+    if('budget' in request.GET):
+        budgetVal=request.GET.get('budget');
+        if(budgetVal=="None"):
+            budgetStart=0;
+            budgetEnd=sys.maxint;
+        else:
+            budgetStart,budgetEnd = budgetVal.split(',',1);
+    else:
+        budgetVal="None";
+        budgetStart=0;
+        budgetEnd=sys.maxint;
 
-    return HttpResponse('<p>'+str(userStr)+'</p>')
+
+    if(categoryVal=="None" and budgetVal=="None"):
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
+    elif(categoryVal!="None" and budgetVal!="None"):
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0)
+    elif(categoryVal=="None" and budgetVal!="None"):
+        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
+    else:
+        items=Item.objects.filter(category=categoryVal).exclude(price=0.0)
+
+    return render(request,'ProductList/index.html',{
+        'items':items,
+        'category':categoryVal,
+        'budget':budgetVal,
+        })
+
+    # users=User.objects.all()
+    # userStr=''
+    # for u in users:
+    #     devices=u.devices.all()
+    #     userStr=userStr+u.devices.all()
+    #
+    # return HttpResponse('<p>'+str(userStr)+'</p>')
 
 def item_detail(request,id):
     if request.method == 'POST':
