@@ -6,7 +6,22 @@ from ProductList.models import *
 import sys
 
 # Create your views here.
+
+#def index(request):
+#    bundles=Bundle.objects.all();
+#    respStr=""
+#    for b in bundles:
+#        respStr=respStr+str(b.price)+" "
+#    return HttpResponse('<p>Price of Bundle is '+respStr+'</p>')
+
+
 def index(request):
+    #bundles=Bundle.objects.all();
+    #return render(request,'ProductList/index.html',{
+    #    'bundles':bundles,
+    #    'category':'None',
+    #    'budget':'None',
+    #    })
     #Getting Category filter value
     if('category' in request.GET):
         categoryVal = request.GET.get('category')
@@ -28,16 +43,18 @@ def index(request):
         
 
     if(categoryVal=="None" and budgetVal=="None"):    
-        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
     elif(categoryVal!="None" and budgetVal!="None"):
-        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
     elif(categoryVal=="None" and budgetVal!="None"):
-        items=Item.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
     else:
-        items=Item.objects.filter(category=categoryVal).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0) 
         
+    
+
     return render(request,'ProductList/index.html',{
-        'items':items,
+        'bundles':bundles,
         'category':categoryVal,
         'budget':budgetVal,
         })
