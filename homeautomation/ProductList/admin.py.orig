@@ -1,0 +1,17 @@
+from django.contrib import admin
+
+# Register your models here.
+from .models import *
+
+class ItemAdmin(admin.ModelAdmin):
+    list_display=['title','price']
+
+
+admin.site.register(Bundle)
+admin.site.register(Item,ItemAdmin)
+<<<<<<< HEAD
+admin.site.register(Comment)
+=======
+admin.site.register(Comment)
+admin.site.register(User)
+>>>>>>> 82e41d6a0efa1bd2433295c9e4e2df9191048a9e
