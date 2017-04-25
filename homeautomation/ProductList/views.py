@@ -1,38 +1,23 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
-from django.contrib.auth import(
-    authenticate,
-    get_user_model,
-    login,
-    logout,
-)
-from .forms import UserLoginForm,UserRegistrationForm, CommentForm
+#from django.contrib.auth import(
+#    authenticate,
+#    get_user_model,
+#    login,
+#    logout,
+#)
+from .forms import CustomUserLoginForm,CustomUserRegistrationForm, CommentForm
 from ProductList.models import *
 import sys
 
 # Create your views here.
 
-#def index(request):
-#    bundles=Bundle.objects.all();
-#    respStr=""
-#    for b in bundles:
-#        respStr=respStr+str(b.price)+" "
-#    return HttpResponse('<p>Price of Bundle is '+respStr+'</p>')
-
 
 def index(request):
-    #bundles=Bundle.objects.all();
-    #return render(request,'ProductList/index.html',{
-    #    'bundles':bundles,
-    #    'category':'None',
-    #    'budget':'None',
-    #    })
-    #Getting Category filter value
     if('category' in request.GET):
         categoryVal = request.GET.get('category')
     else:
         categoryVal="None";
-
     #Getting Budget start filter value
     if('budget' in request.GET):
         budgetVal=request.GET.get('budget');
@@ -45,8 +30,6 @@ def index(request):
         budgetVal="None";
         budgetStart=0;
         budgetEnd=sys.maxint;
-
-
     if(categoryVal=="None" and budgetVal=="None"):
         bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
     elif(categoryVal!="None" and budgetVal!="None"):
@@ -55,22 +38,11 @@ def index(request):
         bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
     else:
         bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0) 
-        
-    
-
     return render(request,'ProductList/index.html',{
         'bundles':bundles,
         'category':categoryVal,
         'budget':budgetVal,
         })
-
-    # users=User.objects.all()
-    # userStr=''
-    # for u in users:
-    #     devices=u.devices.all()
-    #     userStr=userStr+u.devices.all()
-    #
-    # return HttpResponse('<p>'+str(userStr)+'</p>')
 
 def item_detail(request,id):
     if request.method == 'POST':
@@ -113,36 +85,39 @@ def create_comment(request):
     })
 
 def login_view(request):
-    print(request.user.is_authenticated())
+    #print(request.user.is_authenticated())
     title="login"
-    form=UserLoginForm(request.POST or None)
+    form=CustomUserLoginForm(request.POST or None)
     if form.is_valid():
         username=form.cleaned_data.get('username')
         password=form.cleaned_data.get('password')
-        user=authenticate(username=username, password=password)
-        login(request, user)
-        print(request.user.is_authenticated())
-        return redirect('/')
+        #user=authenticate(username=username, password=password)
+        user=CustomUser.objects.get(username=username)
+        if(str(user.username)==username and str(user.password)==password):
+            return redirect('/')
+        #login(request, user)
+        #print(request.user.is_authenticated())
+        #return redirect('/')
     return render(request, "form.html",{"form":form, 'title':title})
 
 def register_view(request):
     print(request.user.is_authenticated())
     title="Register"
-    form=UserRegistrationForm(request.POST or None)
+    form=CustomUserRegistrationForm(request.POST or None)
     if form.is_valid():
         user=form.save(commit=False)
         password = form.cleaned_data.get('password')
-        user.set_password(password)
-        user=User(username=user.username, password=password, email=user.email, devices=user.devices)
+        #user.set_password(password)
+        user=CustomUser(username=user.username, password=password, email=user.email, devices=user.devices)
         user.save()
-        new_user=authenticate(username=user, password=password)
-        login(request, new_user)
-        return redirect('/')
+        #new_user=authenticate(username=user, password=password)
+        #login(request, new_user)
+        return redirect('/login/')
     context = {
     "form":form,
     "title":title
     }
-
+    
     return render(request, "form.html",context)
 
 

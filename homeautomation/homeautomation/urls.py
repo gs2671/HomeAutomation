@@ -30,7 +30,6 @@ urlpatterns = [
     url(r'^register/',register_view,name="register"),
     url(r'^login/',login_view,name="login"),
     url(r'^logout/',logout_view,name="logout"),
-
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,5 @@
 from django import forms
-# from django.contrib.auth import(
+#from django.contrib.auth import(
 #     authenticate,
 #     get_user_model,
 #     login,
@@ -12,7 +12,7 @@ class CommentForm(forms.Form):
 
 #User=get_user_model()
 
-class UserLoginForm(forms.Form):
+class CustomUserLoginForm(forms.Form):
     username = forms.CharField()
     password= forms.CharField(widget=forms.PasswordInput)
 
@@ -24,24 +24,25 @@ class UserLoginForm(forms.Form):
         # user=user_qs
         # if user_qs.count()==1:
         #     user=user_qs.first()
-        if username and password:
-            user=authenticate(username=username, password=password)
-            if not user:
-                raise forms.ValidationError("This user does not exist")
+        #if username and password:
+        #    user=authenticate(username=username, password=password)
+        #    if not user:
+        #        raise forms.ValidationError("This user does not exist")
 
-            if not user.check_password(password):
-                raise forms.ValidationError("Incorrect password")
+        #    if not user.check_password(password):
+        #        raise forms.ValidationError("Incorrect password")
 
-            if not user.is_active:
-                raise forms.ValidationError("This user is not active")
-        return super(UserLoginForm, self).clean(*args, **kwargs)
+        #    if not user.is_active:
+        #        raise forms.ValidationError("This user is not active")
+        return super(CustomUserLoginForm, self).clean(*args, **kwargs)
 
-class UserRegistrationForm(forms.ModelForm):
+class CustomUserRegistrationForm(forms.ModelForm):
+    username=forms.CharField()
     password= forms.CharField(widget=forms.PasswordInput)
     email= forms.EmailField(label="Email Address")
 # First option is data value sshould be changed to item code later
     OPTIONS = [
-            ("Amazon Echo", "Amazon Echo"),
+            ("AmazonEcho", "AmazonEcho"),
             ("Google Home", "Google Home"),
             ("Ring Video Doorbell","Ring Video Doorbell"),
             ('Logitech Harmony Home Hub','Logitech Harmony Home Hub'),
@@ -52,7 +53,7 @@ class UserRegistrationForm(forms.ModelForm):
             ]
     devices = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,choices=OPTIONS)
     class Meta:
-        model= User
+        model= CustomUser
         fields = [
         'username',
         'email',
@@ -62,7 +63,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     def clean_email(self):
         email=self.cleaned_data.get('email')
-        email_qs=User.objects.filter(email=email)
+        email_qs=CustomUser.objects.filter(email=email)
         if email_qs.exists():
             raise forms.ValidationError("This email had already been registered")
         return email

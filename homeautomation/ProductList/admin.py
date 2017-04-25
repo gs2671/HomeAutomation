@@ -10,4 +10,4 @@ class ItemAdmin(admin.ModelAdmin):
 admin.site.register(Bundle)
 admin.site.register(Item,ItemAdmin)
 admin.site.register(Comment)
-admin.site.register(User)
+admin.site.register(CustomUser)

@@ -1,14 +1,26 @@
 {% extends "base.html"%}
+{% load static %}
 {% load crispy_forms_tags %}
 
-{% block content%}
-<div class=col-sm-6 col-sm-offset-3>
-  <h1>{{title}}</title>
-<hr/>
+<link rel="stylesheet" type="text/css" href="{% static 'ProductList/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'ProductList/css/shop-item.css' %}" />
 
-<form method="Post" action='' enctype="multipart/form-data">{% csrf_token%}
-{{form |crispy}}
-<input type="submit" clas="btn btn-default" value='{{title}}' />
-</form>
+{% block content%}
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-9">
+                <p class="lead">{{title|capfirst}}</p>
+                <hr style="width: 100%; color: black;height: 1.5px; background-color:black;" />
+                <form method="Post" action='' enctype="multipart/form-data">{% csrf_token%}
+                {{form |crispy}}
+                <input type="submit" class="btn btn-default btn-success btn-block" value='{{title}}'/>
+                </form>
+            </div>
+        </div>
 </div>
+
+
 {% endblock content%}
