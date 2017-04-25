@@ -29,6 +29,23 @@ class Comment(models.Model):
     createdon=models.DateTimeField(default=datetime.datetime.now)
     item=models.ForeignKey(Item)
 
+class User(models.Model):
+    username= models.TextField(max_length=200,default='None')    
+    password= models.CharField(max_length=200)
+    email= models.CharField(max_length=200)
+    # First option is data value sshould be changed to item code later
+    OPTIONS = [
+            ("Amazon Echo", "Amazon Echo"),
+            ("Google Home", "Google Home"),
+            ("Ring Video Doorbell","Ring Video Doorbell"),
+            ('Logitech Harmony Home Hub','Logitech Harmony Home Hub'),
+            ('Nest Thermostat','Nest Thermostat'),
+            ('Ecobee Remote Sensor','Ecobee Remote Sensor'),
+            ('Philips Hue','Philips Hue'),
+            ('Bose sound link Bluetooth Speaker','Bose sound link Bluetooth Speaker')
+            ]
+    devices = models.TextField(choices=OPTIONS,default='None')
+
 class Bundle(models.Model):
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title=models.CharField(max_length=200)
