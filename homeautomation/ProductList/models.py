@@ -37,13 +37,6 @@ class Bundle(models.Model):
     items=models.ManyToManyField(Item)
     price=models.FloatField(default=0.0)
 
-    #def save(self, *args, **kwargs):
-    #    price=0.0
-    #    for i in self.items.all():
-    #        price=price+i.price
-    #    self.price=self.calculatePrice()
-    #    super(Bundle, self).save(*args, **kwargs)
-
     def __str__(self):
         return self.title
 
@@ -58,10 +51,3 @@ def recalculate_total(sender, instance, action, **kwargs):
         price=price+i.price
         instance.price=price
         instance.save()
-
-# class CommentForm(ModelForm):
-#     class Meta:
-#         model=Comment
-#         fields=['text','createdon','item']
-# def get_absolute_url(self):
-#     return reverse("items:detail",kwargs={"id":self.id})
