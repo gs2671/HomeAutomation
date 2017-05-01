@@ -12,7 +12,6 @@ import sys
 
 # Create your views here.
 
-
 def index(request):
     if('category' in request.GET):
         categoryVal = request.GET.get('category')
@@ -31,13 +30,13 @@ def index(request):
         budgetStart=0;
         budgetEnd=sys.maxint;
     if(categoryVal=="None" and budgetVal=="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
     elif(categoryVal!="None" and budgetVal!="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0)
     elif(categoryVal=="None" and budgetVal!="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
     else:
-        bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0)
     return render(request,'ProductList/index.html',{
         'bundles':bundles,
         'category':categoryVal,
@@ -94,7 +93,7 @@ def login_view(request):
         #user=authenticate(username=username, password=password)
         user=CustomUser.objects.get(username=username)
         if(str(user.username)==username and str(user.password)==password):
-            return redirect('/')
+            return render(request, "index.html",{"user":user})
         #login(request, user)
         #print(request.user.is_authenticated())
         #return redirect('/')
@@ -117,10 +116,14 @@ def register_view(request):
     "form":form,
     "title":title
     }
-    
+
     return render(request, "form.html",context)
 
 
 def logout_view(request):
     logout(request)
     return render(request, "form.html",{})
+
+def user_profile(request,username):
+    user=CustomUser.objects.get(username=username)
+    return render(request, "ProductList/profile.html",{'user':user})
