@@ -14,6 +14,7 @@ import sys
 
 
 def index(request):
+	#Getting Category start filter value
     if('category' in request.GET):
         categoryVal = request.GET.get('category')
     else:
@@ -30,14 +31,17 @@ def index(request):
         budgetVal="None";
         budgetStart=0;
         budgetEnd=sys.maxint;
+
+
     if(categoryVal=="None" and budgetVal=="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)       
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)      
     elif(categoryVal!="None" and budgetVal!="None"):
         bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
     elif(categoryVal=="None" and budgetVal!="None"):
         bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
     else:
         bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0) 
+
     return render(request,'ProductList/index.html',{
         'bundles':bundles,
         'category':categoryVal,

@@ -12,6 +12,7 @@ from django.dispatch import receiver
 
 #Create your models here
 class Item(models.Model):
+    id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title=models.CharField(max_length=200)
     image=models.FileField(null=True, blank=True)
     description=models.TextField()
@@ -25,11 +26,13 @@ class Item(models.Model):
         yield self   
 
 class Comment(models.Model):
+    id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     text=models.TextField()
     createdon=models.DateTimeField(default=datetime.datetime.now)
     item=models.ForeignKey(Item)
 
 class CustomUser(models.Model):
+    id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username= models.CharField(max_length=200,default='None')    
     password= models.CharField(max_length=200)
     email= models.CharField(max_length=200)
