@@ -12,7 +12,6 @@ import sys
 
 # Create your views here.
 
-
 def index(request):
 	#Getting Category start filter value
     if('category' in request.GET):
@@ -34,14 +33,22 @@ def index(request):
 
 
     if(categoryVal=="None" and budgetVal=="None"):
+<<<<<<< HEAD
         bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)      
+=======
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
+>>>>>>> 7fc58afd97f8444a42a95e437134461753dd37b4
     elif(categoryVal!="None" and budgetVal!="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0)
     elif(categoryVal=="None" and budgetVal!="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0) 
+        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
     else:
+<<<<<<< HEAD
         bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0) 
 
+=======
+        bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0)
+>>>>>>> 7fc58afd97f8444a42a95e437134461753dd37b4
     return render(request,'ProductList/index.html',{
         'bundles':bundles,
         'category':categoryVal,
@@ -98,7 +105,7 @@ def login_view(request):
         #user=authenticate(username=username, password=password)
         user=CustomUser.objects.get(username=username)
         if(str(user.username)==username and str(user.password)==password):
-            return redirect('/')
+            return render(request, "index.html",{"user":user})
         #login(request, user)
         #print(request.user.is_authenticated())
         #return redirect('/')
@@ -121,10 +128,14 @@ def register_view(request):
     "form":form,
     "title":title
     }
-    
+
     return render(request, "form.html",context)
 
 
 def logout_view(request):
     logout(request)
     return render(request, "form.html",{})
+
+def user_profile(request,username):
+    user=CustomUser.objects.get(username=username)
+    return render(request, "ProductList/profile.html",{'user':user})
