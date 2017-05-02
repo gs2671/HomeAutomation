@@ -6,5 +6,29 @@
 
 {% block content %}
 
+<body>
+<div class="row">
+
+
+<div class="w3-container col-xs-offset-2 " >
+  <h2></h2>
+
+  <div class="w3-card-4" style="width:70%">
+    <header class="w3-container w3-light-grey">
+      <h2 style="text-align:center">Profile</h2>
+    </header>
+    <div class="w3-container">
+      <hr>
+      <img src="https://s3.amazonaws.com/football-ali/img_avatar3.png" alt="Avatar" class="w3-left  w3-margin-right" >
+          <p> <b>Name: </b> <span>{{user.username}}</p>
+      <p> <b>Devices owned: </b> <span>{{user.devices}}</span></p><br>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>
+
+
 
 {% endblock %}
