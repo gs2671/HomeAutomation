@@ -64,6 +64,7 @@
     <Content Include="homeautomation\homeautomation\templates\base.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\index.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\item_detail.html" />
+    <Content Include="homeautomation\homeautomation\templates\ProductList\profile.html" />
     <Content Include="media_cdn\gateway.png" />
     <Content Include="media_cdn\hamdan.jpg" />
     <Content Include="media_cdn\img1.jpg" />

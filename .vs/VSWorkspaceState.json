@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\homeautomation",
+    "\\homeautomation\\homeautomation",
+    "\\homeautomation\\homeautomation\\templates",
+    "\\homeautomation\\homeautomation\\templates\\ProductList",
+    "\\homeautomation\\ProductList"
+  ],
+  "SelectedNode": "\\homeautomation\\ProductList\\views.py",
+  "PreviewInSolutionExplorer": false
+}

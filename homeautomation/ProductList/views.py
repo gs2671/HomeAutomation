@@ -74,6 +74,7 @@ def index(request):
             'budget':budgetVal,
             'userbundles':userbundles2,
             'useritems':user.items.all(),
+            'user':user,
             })
     else:
         return redirect('/login/')
@@ -166,5 +167,5 @@ def logout_view(request):
     return render(request, "form.html",{})
 
 def user_profile(request,username):
-    user=CustomUser.objects.get(username=username)
+    user=CustomUser.objects.get(id=UUID(request.session['user_id']));
     return render(request, "ProductList/profile.html",{'user':user})
