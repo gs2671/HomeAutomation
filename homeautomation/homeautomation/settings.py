@@ -136,6 +136,7 @@ STATIC_URL = '/static/'
 #MEDIA_URL = "/media/"
 #MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),"media_cdn")
 
+
 AWS_STORAGE_BUCKET_NAME = 'homeautomation-images'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 

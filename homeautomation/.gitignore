@@ -8,4 +8,7 @@
 *.sqlite3
 
 #Python Compiled Files
-*.pyc
+*.pyc
+
+#Django Settings file
+settings.py

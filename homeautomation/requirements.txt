@@ -1,8 +1,7 @@
 appdirs==1.4.3
-boto==2.46.1
-Django==1.9.12
+Django==1.11
 django-crispy-forms==1.6.1
-django-storages==1.5.2
 packaging==16.8
 pyparsing==2.2.0
+pytz==2017.2
 six==1.10.0

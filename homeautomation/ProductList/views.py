@@ -8,52 +8,75 @@ from django.http import HttpResponse,Http404,HttpResponseRedirect
 #)
 from .forms import CustomUserLoginForm,CustomUserRegistrationForm, CommentForm
 from ProductList.models import *
+from uuid import UUID
 import sys
 
 # Create your views here.
 
 def index(request):
-	#Getting Category start filter value
-    if('category' in request.GET):
-        categoryVal = request.GET.get('category')
-    else:
-        categoryVal="None";
-    #Getting Budget start filter value
-    if('budget' in request.GET):
-        budgetVal=request.GET.get('budget');
-        if(budgetVal=="None"):
+	
+    if 'user_id' in request.session:
+        #Getting User object
+        user=CustomUser.objects.get(id=UUID(request.session['user_id']));
+
+        #Getting Category start filter value
+        if('category' in request.GET):
+            categoryVal = request.GET.get('category')
+        else:
+            categoryVal="None";
+
+        #Getting catgory bundles
+        if(categoryVal=="None"):
+            bundles=Bundle.objects.exclude(price=0.0)
+        else:
+            bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0)
+
+        #Subtracting userr items from bundle price
+        userbundles={}
+        for bundle in bundles:
+            bundle.id=str(bundle.id)
+            userbundles[bundle.id]=0
+            for bundleItem in bundle.items.all():
+                if bundleItem in user.items.all():
+                    userbundles[bundle.id]+=1
+                    bundle.price=bundle.price-bundleItem.price
+
+        #Getting Budget start filter value
+        if('budget' in request.GET):
+            budgetVal=request.GET.get('budget')
+            if(budgetVal=="None"):
+                budgetStart=0
+                budgetEnd=sys.maxint
+            else:
+                budgetStart,budgetEnd = budgetVal.split(',',1)
+                budgetStart=int(budgetStart)
+                budgetEnd=int(budgetEnd)
+        else:
+            budgetVal="None";
             budgetStart=0;
             budgetEnd=sys.maxint;
-        else:
-            budgetStart,budgetEnd = budgetVal.split(',',1);
+
+        #Applying Budget filter to bundles
+        filteredBundles=[]
+        userbundles2={}
+        for bundle in bundles:
+            if(bundle.price>budgetStart and bundle.price<=budgetEnd):
+                filteredBundles.append(bundle)
+                userbundles2[bundle.id]=userbundles[bundle.id]
+        #bundles=bundles.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)      
+
+
+
+
+        return render(request,'ProductList/index.html',{
+            'bundles':filteredBundles,
+            'category':categoryVal,
+            'budget':budgetVal,
+            'userbundles':userbundles2,
+            'useritems':user.items.all(),
+            })
     else:
-        budgetVal="None";
-        budgetStart=0;
-        budgetEnd=sys.maxint;
-
-
-    if(categoryVal=="None" and budgetVal=="None"):
-<<<<<<< HEAD
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)      
-=======
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
->>>>>>> 7fc58afd97f8444a42a95e437134461753dd37b4
-    elif(categoryVal!="None" and budgetVal!="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd,category=categoryVal).exclude(price=0.0)
-    elif(categoryVal=="None" and budgetVal!="None"):
-        bundles=Bundle.objects.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)
-    else:
-<<<<<<< HEAD
-        bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0) 
-
-=======
-        bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0)
->>>>>>> 7fc58afd97f8444a42a95e437134461753dd37b4
-    return render(request,'ProductList/index.html',{
-        'bundles':bundles,
-        'category':categoryVal,
-        'budget':budgetVal,
-        })
+        return redirect('/login/')
 
 def item_detail(request,id):
     if request.method == 'POST':
@@ -105,7 +128,9 @@ def login_view(request):
         #user=authenticate(username=username, password=password)
         user=CustomUser.objects.get(username=username)
         if(str(user.username)==username and str(user.password)==password):
-            return render(request, "index.html",{"user":user})
+            request.session['user_id'] = str(user.id)
+            return redirect('/')
+            #return render(request, "ProductList/index.html",{"user":user})
         #login(request, user)
         #print(request.user.is_authenticated())
         #return redirect('/')
@@ -133,7 +158,11 @@ def register_view(request):
 
 
 def logout_view(request):
-    logout(request)
+    #logout(request)
+    try:
+        del request.session['user_id']
+    except KeyError:
+        pass
     return render(request, "form.html",{})
 
 def user_profile(request,username):

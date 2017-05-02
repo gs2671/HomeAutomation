@@ -24,7 +24,7 @@ from ProductList import views
 urlpatterns = [
     url(r'^$',views.index,name="index"),
     url(r'^category/(?P<categoryname>.*)/',views.index,name="filtered_index"),
-    url(r'^item/(?P<id>\d+)/',views.item_detail,name='item_detail'),
+    url(r'^item/(?P<id>.*)/',views.item_detail,name='item_detail'),
     url(r'^ProductList/',include('ProductList.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^register/',register_view,name="register"),

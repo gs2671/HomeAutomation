@@ -84,7 +84,6 @@
                 </div>-->
 
                 <div class="row">
-                    
                     <div class="panel-group">
                         {% for bundle in bundles %}
                         <div class="panel panel-default">
@@ -92,6 +91,11 @@
                               <h4 class="panel-title">
                                 <a data-toggle="collapse" href="#{{bundle.id}}"><b>{{bundle.title}}</b></a>
                                 &nbsp;<span class="badge" style="background-color: #3a87ad">{{bundle.items.count}}</span>
+								{% for id,count in userbundles.items %}
+								  {% if id == bundle.id and count != 0 %}
+									<span class="badge" style="background-color: green">{{count}}</span>
+								  {% endif %}
+								{% endfor %}
                                 <span class="pull-right">${{bundle.price}}</span>
                               </h4>
                               <br />
@@ -118,7 +122,19 @@
                                                                 <a style="width:100%" href="{% url 'item_detail' item.id %}">{{item.title|capfirst}}</a>                                                               
                                                             </h4>
                                                             </td>
-                                                            <td style="text-align:right;width:20%"><h4>${{item.price}}</h4></td>    
+
+														
+															{% if item in useritems %}
+
+															
+                                                            <td style="text-align:right;width:20%"><h4><strike>${{item.price}}</strike><span class="glyphicon glyphicon-ok" style="color:green"></span></h4><td>
+															
+															{% else %}
+
+															<td style="text-align:right;width:20%"><h4>${{item.price}}</h4><td>
+
+															{% endif %}
+
                                                         </tr>           
                                                         <tr>
                                                         <td colspan="2">
