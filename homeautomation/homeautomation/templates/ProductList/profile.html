@@ -9,7 +9,6 @@
 <body>
 <div class="row">
 
-
 <div class="w3-container col-xs-offset-2 " >
   <h2></h2>
 
@@ -19,12 +18,12 @@
     </header>
     <div class="w3-container">
       <hr><center>
-      <img src="https://s3.amazonaws.com/football-ali/img_avatar3.png" alt="Avatar" class="w3-center" style="width:25%; height:150px"><br /><br />
+      <img src="https://s3.amazonaws.com/homeautomation-images/hamza.png" alt="Avatar" class="w3-center" style="width:25%; height:auto"><br /><br />
           <p>Name:  <b>{{user.username}}</b></p>
 		  <p>Devices owned: 
 
 			{% for item in user.items.all %}
-			  <ul style="padding:0;margin:0;display: inline-block;text-align:left;"><li style="text-align:center;"><b>{{item.title}}</b></li></ul>
+			  <ul style="padding:0;margin:0;display: inline-block;text-align:left;"><li style="text-align:left;"><b>{{item.title}}</b></li></ul>
 			{% endfor %}
 		
 		  </p><br></center>

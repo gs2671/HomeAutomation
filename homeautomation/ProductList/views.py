@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from __builtin__ import True
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 #from django.contrib.auth import(
 #    authenticate,
@@ -10,14 +11,20 @@ from .forms import CustomUserLoginForm,CustomUserRegistrationForm, CommentForm
 from ProductList.models import *
 from uuid import UUID
 import sys
+from amazon.api import AmazonAPI
+from django.template.defaulttags import register
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 # Create your views here.
 
-def index(request):
-	
+def index(request):    
     if 'user_id' in request.session:
         #Getting User object
         user=CustomUser.objects.get(id=UUID(request.session['user_id']));
+        cart_items={};
 
         #Getting Category start filter value
         if('category' in request.GET):
@@ -31,15 +38,26 @@ def index(request):
         else:
             bundles=Bundle.objects.filter(category=categoryVal).exclude(price=0.0)
 
-        #Subtracting userr items from bundle price
-        userbundles={}
+        #Subtracting user items from bundle price
+        #rpdb2.start_embedded_debugger("guru")
+        test=""
         for bundle in bundles:
             bundle.id=str(bundle.id)
-            userbundles[bundle.id]=0
             for bundleItem in bundle.items.all():
+                bundle.items_custom.append(bundleItem)
                 if bundleItem in user.items.all():
-                    userbundles[bundle.id]+=1
+                    bundleItem.isOwned=True                     
                     bundle.price=bundle.price-bundleItem.price
+                    bundle.userOwned+=1
+                else:
+                    if(cart_items.has_key(str(bundle.id))):
+                        cart_items[str(bundle.id)].append(str(bundleItem.asin))
+                    else:
+                        cart_items[str(bundle.id)]=[str(bundleItem.asin)]
+
+        #    test+=str(hex(id(bundle.items_custom)))+"------"
+
+        #return HttpResponse('<p>'+test+'</p>')
 
         #Getting Budget start filter value
         if('budget' in request.GET):
@@ -58,23 +76,18 @@ def index(request):
 
         #Applying Budget filter to bundles
         filteredBundles=[]
-        userbundles2={}
         for bundle in bundles:
             if(bundle.price>budgetStart and bundle.price<=budgetEnd):
                 filteredBundles.append(bundle)
-                userbundles2[bundle.id]=userbundles[bundle.id]
         #bundles=bundles.filter(price__gt=budgetStart,price__lte=budgetEnd).exclude(price=0.0)      
-
-
 
 
         return render(request,'ProductList/index.html',{
             'bundles':filteredBundles,
             'category':categoryVal,
             'budget':budgetVal,
-            'userbundles':userbundles2,
-            'useritems':user.items.all(),
             'user':user,
+            'cart_items':cart_items,
             })
     else:
         return redirect('/login/')
@@ -157,7 +170,6 @@ def register_view(request):
 
     return render(request, "form.html",context)
 
-
 def logout_view(request):
     #logout(request)
     try:
@@ -169,3 +181,20 @@ def logout_view(request):
 def user_profile(request,username):
     user=CustomUser.objects.get(id=UUID(request.session['user_id']));
     return render(request, "ProductList/profile.html",{'user':user})
+
+def add_to_cart(request,cartItems):
+    amazon = AmazonAPI('Access Key', 'Secret Key', 'gs2671-20')
+    flag=True
+    cartItems=eval(cartItems)
+    for item in cartItems:       
+        if(flag):
+            product = amazon.lookup(ItemId=item)  
+            amazon_cart = amazon.cart_create([{'offer_id':product.offer_id,'quantity': 1}])
+            flag=False
+        else:
+            product = amazon.lookup(ItemId=item)
+            amazon.cart_add({'offer_id':product.offer_id,'quantity': 1}, amazon_cart.cart_id, amazon_cart.hmac)
+    return HttpResponseRedirect(amazon_cart.purchase_url)    
+
+
+

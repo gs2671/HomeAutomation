@@ -1,7 +1,12 @@
 appdirs==1.4.3
-Django==1.11
+boto==2.46.1
+bottlenose==1.1.2
+Django==1.9.12
 django-crispy-forms==1.6.1
+django-storages==1.5.2
+lxml==3.7.3
 packaging==16.8
 pyparsing==2.2.0
-pytz==2017.2
+python-amazon-simple-product-api==2.2.11
+python-dateutil==2.6.0
 six==1.10.0

@@ -5,15 +5,21 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{02429726-92ee-4156-9c8b-dd591dacc3c6}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>manage.py</StartupFile>
+    <StartupFile>homeautomation\manage.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
-    <LaunchProvider>Django launcher</LaunchProvider>
-    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>Global|PythonCore|2.7-32</InterpreterId>
     <UseIISExpress>true</UseIISExpress>
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <PythonRunWebServerCommandType />
+    <PythonRunWebServerCommandArguments>
+    </PythonRunWebServerCommandArguments>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <PythonDebugWebServerCommandArguments />
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -62,11 +68,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="homeautomation\homeautomation\templates\base.html" />
+    <Content Include="homeautomation\homeautomation\templates\ProductList\403.html" />
+    <Content Include="homeautomation\homeautomation\templates\ProductList\404.html" />
+    <Content Include="homeautomation\homeautomation\templates\ProductList\500.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\index.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\item_detail.html" />
     <Content Include="homeautomation\homeautomation\templates\ProductList\profile.html" />
     <Content Include="media_cdn\gateway.png" />
     <Content Include="media_cdn\hamdan.jpg" />
+    <Content Include="media_cdn\hestia.png" />
     <Content Include="media_cdn\img1.jpg" />
     <Content Include="media_cdn\mr.jpg" />
     <Content Include="media_cdn\mrcoffee.jpg" />

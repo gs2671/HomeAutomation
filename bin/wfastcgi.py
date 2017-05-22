@@ -1,18 +1,23 @@
- # ############################################################################
- #
- # Copyright (c) Microsoft Corporation. 
- #
- # This source code is subject to terms and conditions of the Apache License, Version 2.0. A 
- # copy of the license can be found in the License.html file at the root of this distribution. If 
- # you cannot locate the Apache License, Version 2.0, please send an email to 
- # vspython@microsoft.com. By using this source code in any fashion, you are agreeing to be bound 
- # by the terms of the Apache License, Version 2.0.
- #
- # You must not remove this notice, or any other, from this software.
- #
- # ###########################################################################
-
+# Python Tools for Visual Studio
+# Copyright(c) Microsoft Corporation
+# All rights reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the License); you may not use
+# this file except in compliance with the License. You may obtain a copy of the
+# License at http://www.apache.org/licenses/LICENSE-2.0
+# 
+# THIS CODE IS PROVIDED ON AN  *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS
+# OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+# IMPLIED WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+# MERCHANTABLITY OR NON-INFRINGEMENT.
+# 
+# See the Apache Version 2.0 License for specific language governing
+# permissions and limitations under the License.
 from __future__ import absolute_import, print_function, with_statement
+
+__author__ = "Microsoft Corporation <ptvshelp@microsoft.com>"
+__version__ = "3.0.0"
+
 import ctypes
 import datetime
 import os
@@ -31,8 +36,6 @@ try:
     from thread import start_new_thread
 except ImportError:
     from _thread import start_new_thread
-
-__version__ = '2.2.0'
 
 if sys.version_info[0] == 3:
     def to_str(value):
@@ -335,8 +338,16 @@ REQUEST_PROCESSORS = {
     FCGI_GET_VALUES : read_fastcgi_get_values
 }
 
+APPINSIGHT_CLIENT = None
+
 def log(txt):
     """Logs messages to a log file if WSGI_LOG env var is defined."""
+    if APPINSIGHT_CLIENT:
+        try:
+            APPINSIGHT_CLIENT.track_event(txt)
+        except:
+            pass
+    
     log_file = os.environ.get('WSGI_LOG')
     if log_file:
         with open(log_file, 'a+', encoding='utf-8') as f:
@@ -607,6 +618,7 @@ def get_wsgi_handler(handler_name):
     return handler
 
 def read_wsgi_handler(physical_path):
+    global APPINSIGHT_CLIENT
     env = get_environment(physical_path)
     os.environ.update(env)
     for path in (v for k, v in env.items() if k.lower() == 'pythonpath'):
@@ -618,18 +630,18 @@ def read_wsgi_handler(physical_path):
         )
         sys.path.extend(fs_encode(p) for p in expanded_path.split(';') if p)
     
-    handler = get_wsgi_handler(os.getenv('WSGI_HANDLER'))
-    instr_key = env.get("APPINSIGHTS_INSTRUMENTATIONKEY")
+    handler = get_wsgi_handler(os.getenv("WSGI_HANDLER"))
+    instr_key = os.getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
     if instr_key:
         try:
-            # Attempt the import after updating sys.path- sites must
+            # Attempt the import after updating sys.path - sites must
             # include applicationinsights themselves.
             from applicationinsights.requests import WSGIApplication
         except ImportError:
             maybe_log("Failed to import applicationinsights: " + traceback.format_exc())
-            pass
         else:
             handler = WSGIApplication(instr_key, handler)
+            APPINSIGHT_CLIENT = handler.client
             # Ensure we will flush any remaining events when we exit
             on_exit(handler.client.flush)
 
@@ -781,6 +793,29 @@ def main():
                     response.error_message = 'Error occurred starting file watcher'
                     start_file_watcher(response.physical_path, env.get('WSGI_RESTART_FILE_REGEX'))
 
+                    # Enable debugging if possible. Default to local-only, but
+                    # allow a web.config to override where we listen
+                    ptvsd_secret = env.get('WSGI_PTVSD_SECRET')
+                    if ptvsd_secret:
+                        ptvsd_address = (env.get('WSGI_PTVSD_ADDRESS') or 'localhost:5678').split(':', 2)
+                        try:
+                            ptvsd_port = int(ptvsd_address[1])
+                        except LookupError:
+                            ptvsd_port = 5678
+                        except ValueError:
+                            log('"%s" is not a valid port number for debugging' % ptvsd_address[1])
+                            ptvsd_port = 0
+
+                        if ptvsd_address[0] and ptvsd_port:
+                            try:
+                                import ptvsd
+                            except ImportError:
+                                log('unable to import ptvsd to enable debugging')
+                            else:
+                                addr = ptvsd_address[0], ptvsd_port
+                                ptvsd.enable_attach(secret=ptvsd_secret, address=addr)
+                                log('debugging enabled on %s:%s' % addr)
+
                     response.error_message = ''
                     response.fatal_errors = False
 
@@ -797,6 +832,13 @@ def main():
                 if 'AllowPathInfoForScriptMappings' not in os.environ:
                     record.params['SCRIPT_NAME'] = ''
                     record.params['wsgi.script_name'] = wsgi_encode('')
+
+                # correct SCRIPT_NAME and PATH_INFO if we are told what our SCRIPT_NAME should be
+                if 'SCRIPT_NAME' in os.environ and record.params['PATH_INFO'].lower().startswith(os.environ['SCRIPT_NAME'].lower()):
+                    record.params['SCRIPT_NAME'] = os.environ['SCRIPT_NAME']
+                    record.params['PATH_INFO'] = record.params['PATH_INFO'][len(record.params['SCRIPT_NAME']):]
+                    record.params['wsgi.script_name'] = wsgi_encode(record.params['SCRIPT_NAME'])
+                    record.params['wsgi.path_info'] = wsgi_encode(record.params['PATH_INFO'])
 
                 # Send each part of the response to FCGI_STDOUT.
                 # Exceptions raised in the handler will be logged by the context
@@ -845,23 +887,27 @@ Ensure your user has sufficient privileges and try again.''' % args, file=sys.st
         return ex.returncode
 
 def enable():
+    executable = '"' + sys.executable + '"' if ' ' in sys.executable else sys.executable
+    quoted_file = '"' + __file__ + '"' if ' ' in __file__ else __file__
     res = _run_appcmd([
         "set", "config", "/section:system.webServer/fastCGI",
-        "/+[fullPath='" + sys.executable + "', arguments='" + __file__ + "', signalBeforeTerminateSeconds='30']"
+        "/+[fullPath='" + executable + "', arguments='" + quoted_file + "', signalBeforeTerminateSeconds='30']"
     ])
-    
+
     if res == 0:
-        print('"%s|%s" can now be used as a FastCGI script processor' % (sys.executable, __file__))
+        print('"%s|%s" can now be used as a FastCGI script processor' % (executable, quoted_file))
     return res
 
 def disable():
+    executable = '"' + sys.executable + '"' if ' ' in sys.executable else sys.executable
+    quoted_file = '"' + __file__ + '"' if ' ' in __file__ else __file__    
     res = _run_appcmd([
         "set", "config", "/section:system.webServer/fastCGI",
-        "/-[fullPath='" + sys.executable + "', arguments='" + __file__ + "', signalBeforeTerminateSeconds='30']"
+        "/-[fullPath='" + executable + "', arguments='" + quoted_file + "', signalBeforeTerminateSeconds='30']"
     ])
 
     if res == 0:
-        print('"%s|%s" is no longer registered for use with FastCGI' % (sys.executable, __file__))
+        print('"%s|%s" is no longer registered for use with FastCGI' % (executable, quoted_file))
     return res
 
 if __name__ == '__main__':

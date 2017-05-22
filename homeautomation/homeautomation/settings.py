@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     u'django-env.5bfp4cnjw3.us-west-2.elasticbeanstalk.com',
+    u'django-env.geabx7vnda.us-east-1.elasticbeanstalk.com',
     u'localhost',
     ]
 
@@ -139,7 +140,8 @@ STATIC_URL = '/static/'
 
 AWS_STORAGE_BUCKET_NAME = 'homeautomation-images'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-
+AWS_ACCESS_KEY_ID='Access Key'
+AWS_SECRET_ACCESS_KEY='Secret Key'
 
 MEDIA_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'

@@ -13,11 +13,13 @@ from django.dispatch import receiver
 #Create your models here
 class Item(models.Model):
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    asin=models.CharField(max_length=200, default=0)
     title=models.CharField(max_length=200)
     image=models.FileField(null=True, blank=True)
     description=models.TextField()
     category=models.TextField(choices=[("Kitchen","Kitchen"),("Entertainment","Entertainment"),("Bedroom","Bedroom"),("None","None")], default="None")
     price=models.FloatField(default=0.0)
+    isOwned=models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -51,12 +53,18 @@ class CustomUser(models.Model):
     items=models.ManyToManyField(Item)
 
 class Bundle(models.Model):
+
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title=models.CharField(max_length=200)
     category=models.TextField(choices=[("Kitchen","Kitchen"),("Entertainment","Entertainment"),("Bedroom","Bedroom"),("None","None")], default="None")
     description=models.TextField()
     items=models.ManyToManyField(Item)
     price=models.FloatField(default=0.0)
+
+    def __init__(self, *args, **kwargs):  
+        super(Bundle, self).__init__(*args, **kwargs)
+        self.items_custom=[]
+        self.userOwned=0
 
     def __str__(self):
         return self.title

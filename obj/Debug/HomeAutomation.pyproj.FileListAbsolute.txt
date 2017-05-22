@@ -9,3 +9,5 @@ C:\Users\guru316\Desktop\Turning Ideas into Reality\Project\HomeAutomation\bin\A
 C:\Users\guru316\Desktop\Turning Ideas into Reality\Project\HomeAutomation\bin\Microsoft.PythonTools.AzureSetup.exe
 C:\Users\guru316\Desktop\Turning Ideas into Reality\Project\HomeAutomation\bin\Microsoft.PythonTools.AzureSetup.exe.config
 C:\Users\guru316\Desktop\Turning Ideas into Reality\Project\HomeAutomation\bin\wfastcgi.py
+C:\Users\Dell\Desktop\Turning Ideas into Reality\Project\HomeAutomation\bin\Microsoft.PythonTools.WebRole.dll
+C:\Users\Dell\Desktop\Turning Ideas into Reality\Project\HomeAutomation\bin\wfastcgi.py
